@@ -1,4 +1,5 @@
 # Node.js
+
 >全篇内容参考[Node.js开发指南](http://www.9958.pw/uploads/nodejs_guide.pdf)，部分因为版本问题有做说明改动
 
 ## 安装Node.js
@@ -75,6 +76,7 @@ npm start
 [jade快速上手](https://segmentfault.com/a/1190000000357534#articleHeader11)
 
 ### 引入bootstrap样式和jquery
+
 [bootstrap下载页面](http://twitter.github.com/bootstrap/)
 [jquery下载页面](http://jquery.com/)
 bootstrap下载下来后的文件
@@ -96,7 +98,15 @@ js/bootstrap.min.js
 * jquery下载最新版后名称带有版本号，需要改名为jquery.js
 * 新版4.x express的public目录下存放图片的文件夹名为images，而bootstrap样式中引用的是img，需要修改bootstrap中两处css样式引用图片的文件路径
 
-### 安装mongodb
+### 修改模版文件
+
+修改首页及layout.jade文件 
+见[Node.js开发指南](http://www.9958.pw/uploads/nodejs_guide.pdf)5.5.4章节
+
+### 用户注册／登录／登出
+
+#### 安装mongodb
+
 系统安装
 
 ```
@@ -109,6 +119,8 @@ mongo --version
 ```
 mongod --config /usr/local/etc/mongod.conf
 ```
+
+#### 项目引入使用
 
 项目增加依赖包
 在`package.json`的`dependencies`中增加一行
@@ -186,30 +198,40 @@ app.use(session({
 }));
 ```
 
+#### 创建注册页面
+
+见[Node.js开发指南](http://www.9958.pw/uploads/nodejs_guide.pdf)5.6.3章节
+
+#### 出现问题解决
+
 Cannot read property 'DEFAULT_PORT' of undefined
+修改db.js文件内容
 
 ```
 var settings = require('../settings.js');
-var	Db = require('mongodb').Db;
-var	Connection = require('mongodb').Connection;
-var	Server = require('mongodb').Server;
+var Db = require('mongodb').Db;
+var Connection = require('mongodb').Connection;
+var Server = require('mongodb').Server;
 module.exports = new Db(settings.db,new Server(settings.host, settings.port, {}),{safe:true});
 ```
 
 app.dynamicHelpers is not a function
-1.新版本已经摒弃dynamicHelpers，改用locals
 
-2.flash新版本需要单独下载
+1. 新版本已经摒弃dynamicHelpers，改用locals
+2. flash新版本需要单独下载
+
+```
 npm install connect-flash
 var flash = require('connect-flash');
+```
 
-3.app.use使用需要注意顺序，一般为
+3. app.use使用需要注意顺序，一般为
 
 ```
 自带中间件——session——flash——路由控制器
 ```
 
-使用
+项目中使用代码
 
 ```
 app.use(flash());
