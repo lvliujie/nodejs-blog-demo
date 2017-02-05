@@ -31,7 +31,6 @@ app.use(session({
   secret: settings.cookieSecret,
   store: new MongoStore(settings)
 }));
-//test
 //flash配置
 app.use(flash());
 app.use(function(req,res,next){
